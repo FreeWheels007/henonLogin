@@ -10,12 +10,23 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
 	load_dotenv(ENV_FILE)
 
-def create_app():
-	app = Flask(__name__)
-	app.secret_key = env.get('APP_SECRET_KEY')
+app = Flask(__name__)
+app.secret_key = env.get('APP_SECRET_KEY')
 
-	from .views import views
+oauth = OAuth(app)
 
-	app.register_blueprint(views, url_prefix='/')
+oauth.register(
+    "auth0",
+    client_id=env.get("AUTH0_CLIENT_ID"),
+    client_secret=env.get("AUTH0_CLIENT_SECRET"),
+    client_kwargs={
+        "scope": "openid profile email",
+    },
+    server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
+)
 
-	return app
+from .views import views
+from .auth import auth
+
+app.register_blueprint(views, url_prefix='/')
+app.register_blueprint(auth, url_prefix='/')
