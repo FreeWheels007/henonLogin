@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, redirect, session, url_for
 from website import oauth
+from os import environ as env
+from urllib.parse import quote_plus, urlencode
 
 auth = Blueprint('auth', __name__)
 
@@ -23,7 +25,7 @@ def logout():
         + "/v2/logout?"
         + urlencode(
             {
-                "returnTo": url_for("home", _external=True),
+                "returnTo": url_for("views.home", _external=True),
                 "client_id": env.get("AUTH0_CLIENT_ID"),
             },
             quote_via=quote_plus,
