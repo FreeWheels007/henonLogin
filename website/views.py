@@ -13,6 +13,7 @@ def loggedin_required(function):
 		else:
 			return redirect(url_for('views.guest'))
 
+	wrapper.__name__ = function.__name__
 	return wrapper
 
 
@@ -28,3 +29,10 @@ def guest():
 def home():
 	user = session.get('user')
 	return render_template('home.html', user=user)
+
+
+@views.route('/second')
+@loggedin_required
+def second():
+	user = session.get('user')
+	return render_template('second_page.html', user=user)
