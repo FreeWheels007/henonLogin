@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, session, url_for
-from website import oauth
+from application import oauth
 from os import environ as env
 from urllib.parse import quote_plus, urlencode
 

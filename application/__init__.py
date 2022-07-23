@@ -7,10 +7,10 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
 	load_dotenv(ENV_FILE)
 
-app = Flask(__name__)
-app.secret_key = env.get('APP_SECRET_KEY')
+application = Flask(__name__)
+application.secret_key = env.get('APP_SECRET_KEY')
 
-oauth = OAuth(app)
+oauth = OAuth(application)
 
 oauth.register(
     "auth0",
@@ -25,5 +25,5 @@ oauth.register(
 from .views import views
 from .auth import auth
 
-app.register_blueprint(views, url_prefix='/')
-app.register_blueprint(auth, url_prefix='/auth/')
+application.register_blueprint(views, url_prefix='/')
+application.register_blueprint(auth, url_prefix='/auth/')
